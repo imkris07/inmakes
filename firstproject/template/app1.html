@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task1</title>
+    <style>
+        {
+            table-layout: inherit;
+            text-align: center;
+            padding-block: 14px
+        }
+    </style>
+</head>
+<body style="background-color: #269abc">
+<h2>Registration</h2>
+<form action="registeration" method="post">
+     {% csrf_token %}
+    <label style="text-align: center;solid-color: black;">
+        <input type="text" name="username" placeholder="Enter user name"><br>
+        <input type="text" name="first_name" placeholder="Enter user first_name"><br>
+        <input type="text" name="last_name" placeholder="Enter user last_name"><br>
+        <input type="email" name="email" placeholder="Enter email"><br>
+        <input type="password" name="password" placeholder="Enter password"><br>
+        <input type="password" name="password1" placeholder="confirm password"><br>
+
+        <input type="submit">
+    </label>
+</form>
+{% for msg in messages %}
+{{ msg }}
+{% endfor %}
+</body>
+</html>
