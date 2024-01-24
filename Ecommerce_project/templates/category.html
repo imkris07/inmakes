@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block metadescription %}
+            {% if Category %}
+                {{ Category.description | truncatewords:155 }}
+            {% else %}
+                Welcome to abc store where you can buy different items----
+            {% endif %}
+    {% endblock %}
+
+    {% block title %}
+        {% if Category %}
+            {{ Category.name }}---ABC store
+        {% else %}
+            See our New collections ---@ABC store
+        {% endif %}
+    {% endblock %}
+
+    {% block content %}
+        {% if Category %}
+            <div>
+                <div class="row my_row_class">
+                    <div class="ex-auto">
+                    <p><a href="{% url 'Ecommerce_app:allprodcat' %}"> Our product collections</a> </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+            <div class="ax-auto">
+                {% if Category %}
+                    <img class="my_image" src="{{ Category.image.url }}" alt="{{ Category.name }}" width="1200px" height="400px">
+            </div>
+                    <br>
+                    <div>
+                        <h1 class="text-center my_title">{{ Category.name }}</h1>
+                        <p class="text-justify">{{ Category.description }}</p>
+                    </div>
+                {% else %}
+                    <div>
+                        <img class="my_image my_image_padding" src="{% static 'image/banner.png' %}" alt="Our products" width="1300px" height="400px">
+                    </div>
+                    <br>
+                    <div>
+                        <h1 class="text-center my_title">Fresh Fruits Online & Fresh Vegetables Online</h1>
+                        <P class="text-justify">We’re not your average fruit importers. We have expertise in sourcing the choicest of fresh fruits from around the world and distributing it across the length and breadth of India. Our top-notch distribution network strengthened through almost a century of existence in the fruit business, works efficiently to ensure the fruits are delivered far and wide with an intriguing depth of freshness. We provide fresh fruits online and fresh vegetables online.
+
+We have expertise in providing fresh fruits online and fresh vegetables online and offline and sourcing the choicest of fruits and vegetables from around the world</P>
+                    </div>
+                {% endif %}
+            <div class="container">
+                <div class="row max_auto">
+                    {% for product in products.object_list %}
+                        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+                            <div class="card text-center " style="min-width: 18rem;" >
+                                <a href="{{ product.category.get_url }}" > <img class="card-img-top my_image" src="{{ product.image.url }}" alt="{{ product.name }}" ></a>
+                                    <div class="card-body">
+                                        <h4>{{ product.name }}</h4>
+                                        <p>{{ product.price }}</p>
+                                    </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+              <div class="mx-auto">
+                  {% if products.paginator.num_pages > 1 %}
+
+                      <hr>
+                      <div class="text-center">
+                      {% for pg in products.paginator.page_range %}
+                          <a href="?page={{ pg }}" class="btn btn-light btn-sm {% if products.number == pg %} active{% endif %}">{{ pg }}</a>
+                      {% endfor %}
+                      </div>
+                        <div class="text-center">
+                            {% for p in products.paginator.page_range %}
+                            {% endfor %}
+                        </div>
+                {% endif %}
+              </div>
+            </div>
+    {% endblock %}
