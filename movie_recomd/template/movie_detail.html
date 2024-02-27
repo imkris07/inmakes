@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }}</title>
+</head>
+<body>
+    <h2>{{ movie.title }}</h2>
+    <p><strong>Description:</strong> {{ movie.description }}</p>
+    <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+    <p><strong>Actors:</strong> {{ movie.actors }}</p>
+    <p><strong>Category:</strong> {{ movie.category }}</p>
+    <p><strong>Trailer:</strong> <a href="{{ movie.trailer_link }}">Watch Trailer</a></p>
+
+    <h3>Reviews</h3>
+    {% if reviews %}
+        <ul>
+        {% for review in reviews %}
+            <li>{{ review.user }} - {{ review.rating }}/10: {{ review.review_text }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reviews yet.</p>
+    {% endif %}
+
+    <h3>Post a Review</h3>
+    <form method="post" action="{% url 'post_review' movie.pk %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post Review</button>
+    </form>
+        <a href="{% url 'profile' %}">Return to Profile</a>
+</body>
+</html>

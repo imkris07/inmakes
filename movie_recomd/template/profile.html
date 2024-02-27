@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 30px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Profile</h2>
+        <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+        <p>First Name: <strong>{{ user.first_name }}</strong></p>
+        <p>Last Name: <strong>{{ user.last_name }}</strong></p>
+        <p>Email: <strong>{{ user.email }}</strong></p>
+
+        <!-- Logout button -->
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+
+        <h3>Edit Profile</h3>
+        <form method="post" action="{% url 'edit_profile' %}">
+            {% csrf_token %}
+            <!-- Edit profile fields -->
+            <button type="submit">Save Changes</button>
+        </form>
+
+        <h3>Change Password</h3>
+        <form method="post" action="{% url 'change_password' %}">
+            {% csrf_token %}
+            <!-- Change password fields -->
+            <button type="submit">Change Password</button>
+        </form>
+
+        <h3>Add Movie</h3>
+        <form method="post" action="{% url 'add_movie' %}">
+            {% csrf_token %}
+            <!-- Add movie fields -->
+            <button type="submit">Add Movie</button>
+        </form>
+
+        <h3>Your Movies</h3>
+        <ul>
+            {% for movie in movies %}
+                <li>{{ movie.title }} - <a href="{% url 'edit_movie' movie.pk %}">Edit</a> | <a href="{% url 'delete_movie' movie.pk %}">Delete</a></li>
+                <form method="post" action="{% url 'movie_detail' movie.pk %}">
+                    {% csrf_token %}
+                    <!-- Review fields -->
+                    <button type="submit">Movie Details</button>
+                </form>
+            {% endfor %}
+        </ul>
+
+        {% if movies %}
+        <h3>Post a Review</h3>
+        <form method="post" action="{% url 'post_review' movies.0.pk %}">
+            {% csrf_token %}
+            <!-- Review fields -->
+            <button type="submit">Post Review</button>
+        </form>
+        {% endif %}
+
+        <h3>Your Reviews</h3>
+        <ul>
+            {% for review in user.review_set.all %}
+                <li>{{ review.movie.title }} - Rating: {{ review.rating }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
